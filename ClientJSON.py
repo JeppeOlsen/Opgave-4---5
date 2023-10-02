@@ -39,4 +39,3 @@ while True:
     result = response.get("result")
     print(f"Result: {result}")
 
-clientSocket.close()

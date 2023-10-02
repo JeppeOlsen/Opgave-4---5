@@ -13,7 +13,10 @@ serverPort = 12000
 clientSocket.connect((serverName, serverPort))
 
 while True:
-    operation = input("Enter operation (Random, Add, Subtract): ")
+    operation = input("Enter operation (Random, Add, Subtract) or 'exit' to quit: ")
+    if operation == "exit":
+        break
+    
     if operation not in ["Random", "Add", "Subtract"]:
         print("Invalid operation. Please try again.")
         continue
@@ -22,7 +25,6 @@ while True:
         min_num = input("Enter the minimum number: ")
         max_num = input("Enter the maximum number: ")
         request = f"{operation} {min_num} {max_num}"
-        
     elif operation in ["Add", "Subtract"]:
         n1 = input("Enter the first number: ")
         n2 = input("Enter the second number: ")
