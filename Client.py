@@ -1,27 +1,36 @@
 from socket import *
 
-serverName = 'localhost'
-serverPort = 12000
+def send_data(clientSocket, data):
+    clientSocket.sendall(data.encode())
+
+def receive_data(clientSocket):
+    data = clientSocket.recv(1024).decode()
+    return data
 
 clientSocket = socket(AF_INET, SOCK_STREAM)
+serverName = 'localhost'
+serverPort = 12000
 clientSocket.connect((serverName, serverPort))
 
-operation = input("Enter operation (Random/Add/Subtract): ")
-clientSocket.sendall(operation.encode())
+while True:
+    operation = input("Enter operation (Random, Add, Subtract): ")
+    if operation not in ["Random", "Add", "Subtract"]:
+        print("Invalid operation. Please try again.")
+        continue
 
-if operation == "Random":
-    min_num, max_num = map(int, input("Enter min and max number separated by a ;(Semicolon): ").split(";"))
-    clientSocket.sendall(f"{min_num};{max_num}".encode())
+    if operation == "Random":
+        min_num = input("Enter the minimum number: ")
+        max_num = input("Enter the maximum number: ")
+        request = f"{operation} {min_num} {max_num}"
+        
+    elif operation in ["Add", "Subtract"]:
+        n1 = input("Enter the first number: ")
+        n2 = input("Enter the second number: ")
+        request = f"{operation} {n1} {n2}"
 
-elif operation in ["Add", "Subtract"]:
-    n1, n2 = map(int, input("Enter the two numbers you want to add or subtract separated by a ;(Semicolon): ").split(";"))
-    clientSocket.sendall(f"{n1};{n2}".encode())
-else:
-    print("Invalid operation")
-    clientSocket.close()
-    exit()
+    send_data(clientSocket, request)
+    response = receive_data(clientSocket)
 
-result = clientSocket.recv(1024).decode()
-print("Result from server:", result)
+    print(f"Result: {response}")
 
 clientSocket.close()
