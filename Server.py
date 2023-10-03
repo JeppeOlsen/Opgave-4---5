@@ -35,7 +35,8 @@ def handle_client(connectionSocket, client_address):
             result = "Invalid"
 
     send_data(connectionSocket, result)
-    connectionSocket.close()
+
+   
 
 serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_STREAM)
